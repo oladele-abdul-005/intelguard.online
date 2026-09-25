@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IntelGuard — Signal on tech, security &amp; AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B0F14;
+    --panel:#121922;
+    --line:#232C37;
+    --text:#E8EDF2;
+    --muted:#8A97A6;
+    --amber:#FFB020;
+    --cyan:#4FD8E0;
+    --violet:#B98CFF;
+    --teal:#5FD6A6;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--ink);
+    color:var(--text);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.5;
+  }
+
+  h1,h2,h3,h4{
+    font-family:'Archivo', sans-serif;
+    font-weight:800;
+    letter-spacing:-0.01em;
+    line-height:1.15;
+  }
+
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+
+  .wrap{max-width:1180px; margin:0 auto; padding:0 20px;}
+
+  /* ---------- header ---------- */
+  header{
+    border-bottom:1px solid var(--line);
+    position:sticky; top:0; z-index:50;
+    background:rgba(11,15,20,0.92);
+    backdrop-filter:blur(6px);
+  }
+  .header-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 20px;
+    max-width:1180px; margin:0 auto;
+  }
+  .logo{
+    font-family:'Archivo', sans-serif;
+    font-weight:800; font-size:1.25rem;
+    letter-spacing:-0.02em;
+    display:flex; align-items:center; gap:8px;
+  }
+  .logo .dot{width:9px; height:9px; background:var(--amber); border-radius:50%; display:inline-block;}
+  nav.primary{display:flex; gap:28px;}
+  nav.primary a{
+    font-size:0.92rem; color:var(--muted);
+    padding:4px 0; border-bottom:2px solid transparent;
+    transition:color .15s, border-color .15s;
+  }
+  nav.primary a:hover{color:var(--text); border-color:var(--cyan);}
+
+  .header-actions{display:flex; align-items:center; gap:14px;}
+  .btn{
+    font-size:0.88rem; font-weight:600;
+    padding:9px 18px;
+    background:var(--amber); color:#0B0F14;
+    border:none; cursor:pointer;
+  }
+  .btn:hover{background:#ffc250;}
+  .icon-btn{
+    background:none; border:1px solid var(--line); color:var(--text);
+    width:36px; height:36px; display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+  }
+  .hamburger{display:none;}
+  #mobile-nav{display:none;}
+
+  @media (max-width:860px){
+    nav.primary{display:none;}
+    .hamburger{display:flex;}
+    .btn{display:none;}
+    #mobile-nav.open{
+      display:flex; flex-direction:column;
+      border-top:1px solid var(--line);
+      padding:14px 20px 18px;
+      gap:14px;
+    }
+    #mobile-nav a{color:var(--muted); font-size:0.95rem;}
+  }
+
+  /* ---------- section heading pattern ---------- */
+  .section-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    border-bottom:1px solid var(--line);
+    padding-bottom:14px; margin-bottom:28px;
+  }
+  .section-head h2{font-size:1.5rem;}
+  .section-head .viewall{font-size:0.85rem; color:var(--cyan); border-bottom:1px solid transparent;}
+  .section-head .viewall:hover{border-color:var(--cyan);}
+
+  .tag{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:0.78rem; color:var(--muted);
+    margin-bottom:10px;
+  }
+  .tag .dot{width:6px; height:6px; border-radius:50%; display:inline-block;}
+  .tag.technology .dot{background:var(--cyan);} .tag.technology{color:var(--cyan);}
+  .tag.cybersecurity .dot{background:var(--amber);} .tag.cybersecurity{color:var(--amber);}
+  .tag.ai-tools .dot{background:var(--violet);} .tag.ai-tools{color:var(--violet);}
+  .tag.gadgets .dot{background:var(--teal);} .tag.gadgets{color:var(--teal);}
+  .tag.software .dot{background:var(--cyan);} .tag.software{color:var(--cyan);}
+
+  .meta{font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--muted);}
+
+  /* ---------- hero ---------- */
+  .hero{padding:44px 0 52px;}
+  .hero-grid{
+    display:grid; grid-template-columns:1.6fr 1fr; gap:44px;
+  }
+  .hero-feature img{
+    width:100%; aspect-ratio:16/10; object-fit:cover;
+    border:1px solid var(--line);
+  }
+  .hero-feature{position:relative;}
+  .hero-feature .scan{
+    position:absolute; left:0; right:0; top:0; height:2px;
+    background:var(--cyan); opacity:0.85;
+    animation:scan 1.6s ease-out 1;
+  }
+  @keyframes scan{
+    0%{top:0; opacity:0.9;}
+    100%{top:100%; opacity:0;}
+  }
+  .hero-feature h1{font-size:2rem; margin:16px 0 10px;}
+  .hero-feature p{color:var(--muted); font-size:0.98rem; max-width:52ch;}
+
+  .signal-feed{border-left:1px solid var(--line); padding-left:28px;}
+  .signal-feed .feed-label{font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--muted); margin-bottom:16px; display:block;}
+  .feed-item{
+    border-left:2px solid var(--line);
+    padding:2px 0 18px 16px; margin-left:-18px;
+    transition:border-color .15s;
+  }
+  .feed-item:hover{border-color:var(--amber);}
+  .feed-item h4{font-size:1rem; font-weight:600; font-family:'IBM Plex Sans'; margin-top:4px;}
+
+  @media (max-width:860px){
+    .hero-grid{grid-template-columns:1fr;}
+    .signal-feed{border-left:none; padding-left:0; padding-top:24px; border-top:1px solid var(--line);}
+  }
+
+  /* ---------- editor's picks strip ---------- */
+  .picks{padding:40px 0;}
+  .picks-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:24px;
+  }
+  .pick-card img{width:100%; aspect-ratio:4/3; object-fit:cover; border:1px solid var(--line); margin-bottom:12px;}
+  .pick-card h3{font-size:1.05rem;}
+
+  @media (max-width:760px){
+    .picks-grid{grid-template-columns:1fr; gap:28px;}
+  }
+
+  /* ---------- newsletter banner ---------- */
+  .newsletter{
+    border:1px solid var(--line);
+    background:var(--panel);
+    padding:36px 28px;
+    display:flex; align-items:center; justify-content:space-between; gap:24px;
+    flex-wrap:wrap;
+    margin:8px 0 8px;
+  }
+  .newsletter h3{font-size:1.3rem; margin-bottom:6px;}
+  .newsletter p{color:var(--muted); font-size:0.92rem;}
+  .newsletter form{display:flex; gap:0; flex:0 0 auto;}
+  .newsletter input{
+    background:var(--ink); border:1px solid var(--line); border-right:none;
+    color:var(--text); padding:11px 14px; font-size:0.9rem; width:220px;
+  }
+  .newsletter input:focus{outline:2px solid var(--cyan); outline-offset:-2px;}
+  .newsletter .btn{padding:11px 20px;}
+
+  @media (max-width:560px){
+    .newsletter form{width:100%; flex-wrap:wrap;}
+    .newsletter input{width:100%; border-right:1px solid var(--line); margin-bottom:8px;}
+  }
+
+  /* ---------- category rows ---------- */
+  .category-section{padding:44px 0;}
+  .category-section:nth-of-type(even){background:var(--panel);}
+  .row-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:32px;
+  }
+  .row-card img{width:100%; aspect-ratio:3/2; object-fit:cover; border:1px solid var(--line); margin-bottom:12px;}
+  .row-card h3{font-size:1.08rem; margin-bottom:8px;}
+  .row-card p{color:var(--muted); font-size:0.88rem; margin-bottom:10px;}
+
+  @media (max-width:760px){
+    .row-grid{grid-template-columns:1fr; gap:30px;}
+  }
+
+  /* ---------- stay connected ---------- */
+  .connect{padding:44px 0;}
+  .connect-grid{
+    display:grid; grid-template-columns:repeat(3,1fr) 1.3fr; gap:1px;
+    background:var(--line); border:1px solid var(--line);
+  }
+  .connect-cell{background:var(--ink); padding:26px 22px;}
+  .connect-cell .count{font-family:'Archivo'; font-weight:800; font-size:1.6rem;}
+  .connect-cell .platform{color:var(--muted); font-size:0.85rem; margin-top:4px;}
+  .podcast-cell{background:var(--panel); display:flex; flex-direction:column; justify-content:center;}
+  .podcast-cell .feed-label{font-family:'IBM Plex Mono'; font-size:0.7rem; color:var(--amber); display:block; margin-bottom:6px;}
+  .podcast-cell h4{font-size:1.1rem; margin-bottom:6px;}
+  .podcast-cell p{color:var(--muted); font-size:0.85rem; margin-bottom:14px;}
+
+  @media (max-width:860px){
+    .connect-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:520px){
+    .connect-grid{grid-template-columns:1fr;}
+  }
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--line); padding:48px 0 28px; margin-top:20px;}
+  .footer-grid{
+    display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:32px;
+    padding-bottom:36px;
+  }
+  .footer-grid h5{font-size:0.82rem; color:var(--muted); font-weight:600; margin-bottom:14px;}
+  .footer-grid ul{list-style:none;}
+  .footer-grid li{margin-bottom:9px; font-size:0.9rem;}
+  .footer-grid a:hover{color:var(--cyan);}
+  .footer-brand .logo{margin-bottom:12px;}
+  .footer-brand p{color:var(--muted); font-size:0.88rem; max-width:32ch;}
+  .footer-bottom{
+    border-top:1px solid var(--line); padding-top:20px;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    color:var(--muted); font-size:0.8rem;
+  }
+
+  @media (max-width:760px){
+    .footer-grid{grid-template-columns:1fr 1fr; row-gap:28px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="#" class="logo"><span class="dot"></span>INTELGUARD</a>
+    <nav class="primary">
+      <a href="#technology">Technology</a>
+      <a href="#ai-tools">AI Tools</a>
+      <a href="#cybersecurity">Cybersecurity</a>
+      <a href="#gadgets">Gadgets</a>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-btn" aria-label="Search">⌕</button>
+      <button class="btn">Subscribe</button>
+      <button class="icon-btn hamburger" id="hamburger-btn" aria-label="Menu">☰</button>
+    </div>
+  </div>
+  <nav id="mobile-nav">
+    <a href="#technology">Technology</a>
+    <a href="#ai-tools">AI Tools</a>
+    <a href="#cybersecurity">Cybersecurity</a>
+    <a href="#gadgets">Gadgets</a>
+    <a href="#">Subscribe</a>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid">
+      <div class="hero-feature">
+        <div class="scan"></div>
+        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=900&q=80" alt="AI agent interface on a laptop screen">
+        <span class="tag ai-tools"><span class="dot"></span>AI Tools</span>
+        <h1>AI agents are quietly rewriting what a browser is for</h1>
+        <p>A new wave of agentic tools is handling logins, forms, and multi-step tasks without you touching the keyboard. Here's what's actually ready to use today, and what still needs a human in the loop.</p>
+        <div class="meta" style="margin-top:12px;">Dara Okafor, Sep 24, 2026</div>
+      </div>
+
+      <div class="signal-feed">
+        <span class="feed-label">// LATEST SIGNAL</span>
+
+        <div class="feed-item">
+          <span class="tag cybersecurity"><span class="dot"></span>Cybersecurity</span>
+          <h4>The VPNs actually worth paying for in 2026</h4>
+          <div class="meta">Sep 24, 2026</div>
+        </div>
+
+        <div class="feed-item">
+          <span class="tag cybersecurity"><span class="dot"></span>Cybersecurity</span>
+          <h4>Password managers are becoming mandatory, not optional</h4>
+          <div class="meta">Sep 23, 2026</div>
+        </div>
+
+        <div class="feed-item">
+          <span class="tag gadgets"><span class="dot"></span>Gadgets</span>
+          <h4>Foldables finally feel like normal phones</h4>
+          <div class="meta">Sep 22, 2026</div>
+        </div>
+
+        <div class="feed-item">
+          <span class="tag software"><span class="dot"></span>Software</span>
+          <h4>The quiet death of the standalone app</h4>
+          <div class="meta">Sep 21, 2026</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDITOR'S PICKS -->
+  <section class="picks">
+    <div class="section-head">
+      <h2>Editor's picks</h2>
+      <a href="#" class="viewall">View all</a>
+    </div>
+    <div class="picks-grid">
+      <div class="pick-card">
+        <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=600&q=80" alt="Developer writing code with AI assistant suggestions">
+        <span class="tag ai-tools"><span class="dot"></span>AI Tools</span>
+        <h3>Inside the AI coding assistant wars</h3>
+      </div>
+      <div class="pick-card">
+        <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=600&q=80" alt="Abstract network security visualization">
+        <span class="tag cybersecurity"><span class="dot"></span>Cybersecurity</span>
+        <h3>Ransomware gangs are getting faster. Here's what changed.</h3>
+      </div>
+      <div class="pick-card">
+        <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&q=80" alt="Laptop on a desk set up for remote work">
+        <span class="tag gadgets"><span class="dot"></span>Gadgets</span>
+        <h3>The best budget laptops for remote work right now</h3>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="newsletter">
+    <div>
+      <h3>Get the signal, skip the noise.</h3>
+      <p>One email a week — the tech and security stories worth your time.</p>
+    </div>
+    <form onsubmit="return false;">
+      <input type="email" placeholder="you@email.com" required>
+      <button class="btn" type="submit">Subscribe</button>
+    </form>
+  </section>
+
+  <!-- TECHNOLOGY -->
+  <section class="category-section" id="technology">
+    <div class="section-head">
+      <h2>Technology</h2>
+      <a href="#" class="viewall">More in Technology</a>
+    </div>
+    <div class="row-grid">
+      <article class="row-card">
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80" alt="Circuit board close-up">
+        <span class="tag technology"><span class="dot"></span>Technology</span>
+        <h3>What a chip shortage in 2026 would actually look like</h3>
+        <p>Supply chains have changed since 2021 — but the pressure points haven't disappeared, they've moved.</p>
+        <div class="meta">Priya Menon, Sep 20, 2026</div>
+      </article>
+      <article class="row-card">
+        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&q=80" alt="Data center server racks">
+        <span class="tag technology"><span class="dot"></span>Technology</span>
+        <h3>Inside the race to build smaller, cheaper data centers</h3>
+        <p>Edge computing is being pitched again — this time the economics might actually work.</p>
+        <div class="meta">Sep 19, 2026</div>
+      </article>
+      <article class="row-card">
+        <img src="https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=600&q=80" alt="Person using a smartwatch">
+        <span class="tag technology"><span class="dot"></span>Technology</span>
+        <h3>Wearables are starting to talk to each other properly</h3>
+        <p>Cross-brand syncing was the missing piece. It's finally showing up.</p>
+        <div class="meta">Sep 18, 2026</div>
+      </article>
+    </div>
+  </section>
+
+  <!-- CYBERSECURITY -->
+  <section class="category-section" id="cybersecurity">
+    <div class="section-head">
+      <h2>Cybersecurity</h2>
+      <a href="#" class="viewall">More in Cybersecurity</a>
+    </div>
+    <div class="row-grid">
+      <article class="row-card">
+        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&q=80" alt="Padlock icon over a laptop keyboard">
+        <span class="tag cybersecurity"><span class="dot"></span>Cybersecurity</span>
+        <h3>How to actually check if your passwords have leaked</h3>
+        <p>Beyond the browser warning — the tools worth using and how often to check.</p>
+        <div class="meta">Tomas Berg, Sep 20, 2026</div>
+      </article>
+      <article class="row-card">
+        <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&q=80" alt="Person typing on laptop with security overlay">
+        <span class="tag cybersecurity"><span class="dot"></span>Cybersecurity</span>
+        <h3>Two-factor isn't enough anymore. Here's what's next.</h3>
+        <p>Passkeys are finally mainstream — but adoption is uneven across the apps you actually use.</p>
+        <div class="meta">Sep 19, 2026</div>
+      </article>
+      <article class="row-card">
+        <img src="https://images.unsplash.com/photo-1614064548237-096f735f344f?w=600&q=80" alt="Abstract digital lock graphic">
+        <span class="tag cybersecurity"><span class="dot"></span>Cybersecurity</span>
+        <h3>Small business, big target: the case for a real security budget</h3>
+        <p>Attackers have noticed that small teams often skip the basics. Here's where to start.</p>
+        <div class="meta">Sep 17, 2026</div>
+      </article>
+    </div>
+  </section>
+
+  <!-- AI TOOLS -->
+  <section class="category-section" id="ai-tools">
+    <div class="section-head">
+      <h2>AI Tools</h2>
+      <a href="#" class="viewall">More in AI Tools</a>
+    </div>
+    <div class="row-grid">
+      <article class="row-card">
+        <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=600&q=80" alt="Person working with AI chat interface on screen">
+        <span class="tag ai-tools"><span class="dot"></span>AI Tools</span>
+        <h3>Five AI writing tools we'd actually pay for</h3>
+        <p>We tested a dozen. These held up past the free trial.</p>
+        <div class="meta">Dara Okafor, Sep 21, 2026</div>
+      </article>
+      <article class="row-card">
+        <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600&q=80" alt="Robot arm and automation on a desk">
+        <span class="tag ai-tools"><span class="dot"></span>AI Tools</span>
+        <h3>What "agentic" actually means, explained simply</h3>
+        <p>The term is everywhere. The definition keeps slipping. Here's a version that holds up.</p>
+        <div class="meta">Sep 20, 2026</div>
+      </article>
+      <article class="row-card">
+        <img src="https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=600&q=80" alt="Person analyzing charts on a computer">
+        <span class="tag ai-tools"><span class="dot"></span>AI Tools</span>
+        <h3>Free vs. paid AI plans: where the upgrade is actually worth it</h3>
+        <p>A category-by-category breakdown of when the free tier stops being enough.</p>
+        <div class="meta">Sep 18, 2026</div>
+      </article>
+    </div>
+  </section>
+
+  <!-- GADGETS -->
+  <section class="category-section" id="gadgets">
+    <div class="section-head">
+      <h2>Gadgets</h2>
+      <a href="#" class="viewall">More in Gadgets</a>
+    </div>
+    <div class="row-grid">
+      <article class="row-card">
+        <img src="https://images.unsplash.com/photo-1585790050230-5dd28404ccb9?w=600&q=80" alt="Wireless earbuds and smartphone on a table">
+        <span class="tag gadgets"><span class="dot"></span>Gadgets</span>
+        <h3>The best noise-cancelling earbuds under $150</h3>
+        <p>You don't need the flagship price to get flagship silence.</p>
+        <div class="meta">Sep 19, 2026</div>
+      </article>
+      <article class="row-card">
+        <img src="https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?w=600&q=80" alt="Smart home hub and devices on a shelf">
+        <span class="tag gadgets"><span class="dot"></span>Gadgets</span>
+        <h3>Setting up a smart home without a subscription trap</h3>
+        <p>A buyer's guide to devices that work locally and stay working.</p>
+        <div class="meta">Sep 17, 2026</div>
+      </article>
+      <article class="row-card">
+        <img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=600&q=80" alt="Person holding a modern smartphone">
+        <span class="tag gadgets"><span class="dot"></span>Gadgets</span>
+        <h3>Is it finally time to skip the phone upgrade this year?</h3>
+        <p>A realistic look at what's changed generation over generation.</p>
+        <div class="meta">Sep 16, 2026</div>
+      </article>
+    </div>
+  </section>
+
+  <!-- STAY CONNECTED -->
+  <section class="connect">
+    <div class="section-head">
+      <h2>Stay connected</h2>
+    </div>
+    <div class="connect-grid">
+      <div class="connect-cell">
+        <div class="count">18K+</div>
+        <div class="platform">Newsletter subscribers</div>
+      </div>
+      <div class="connect-cell">
+        <div class="count">42K+</div>
+        <div class="platform">Followers on X</div>
+      </div>
+      <div class="connect-cell">
+        <div class="count">9K+</div>
+        <div class="platform">YouTube subscribers</div>
+      </div>
+      <div class="podcast-cell">
+        <span class="feed-label">THE INTELGUARD BRIEFING</span>
+        <h4>A five-minute daily tech &amp; security briefing</h4>
+        <p>What changed overnight, and whether it actually matters.</p>
+        <a href="#" class="btn" style="display:inline-block; width:fit-content;">Listen now</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo"><span class="dot"></span>INTELGUARD</a>
+        <p>Straight answers on tech, AI, and security — for people who don't have time to sort through the hype.</p>
+      </div>
+      <div>
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Advertise</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Sections</h5>
+        <ul>
+          <li><a href="#technology">Technology</a></li>
+          <li><a href="#cybersecurity">Cybersecurity</a></li>
+          <li><a href="#ai-tools">AI Tools</a></li>
+          <li><a href="#gadgets">Gadgets</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Legal</h5>
+        <ul>
+          <li><a href="#">Privacy policy</a></li>
+          <li><a href="#">Terms of service</a></li>
+          <li><a href="#">Affiliate disclosure</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 IntelGuard. All rights reserved.</span>
+      <span>intelguard.online</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('hamburger-btn').addEventListener('click', function(){
+    document.getElementById('mobile-nav').classList.toggle('open');
+  });
+</script>
+
+</body>
+</html>
