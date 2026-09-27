@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IntelGuard — Signal on tech, security &amp; AI</title>
+<meta name="description" content="Straight answers on technology, cybersecurity, AI, and gadgets — without the hype.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="IntelGuard — Signal on tech, security &amp; AI">
+<meta property="og:description" content="Straight answers on technology, cybersecurity, AI, and gadgets — without the hype.">
+<meta property="og:url" content="https://intelguard.online/">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://intelguard.online/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
@@ -39,9 +46,22 @@
   }
 
   a{color:inherit; text-decoration:none;}
+  a:focus-visible, button:focus-visible, input:focus-visible{
+    outline:3px solid var(--cyan);
+    outline-offset:3px;
+  }
   img{max-width:100%; display:block;}
 
   .wrap{max-width:1180px; margin:0 auto; padding:0 20px;}
+  .skip-link{
+    position:absolute; left:20px; top:-60px; z-index:100;
+    background:var(--amber); color:var(--ink); font-weight:700; padding:10px 14px;
+  }
+  .skip-link:focus{top:16px;}
+  .sr-only{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
 
   /* ---------- header ---------- */
   header{
@@ -78,6 +98,7 @@
     border:none; cursor:pointer;
   }
   .btn:hover{background:#ffc250;}
+  .btn:focus-visible{outline-color:var(--cyan);}
   .icon-btn{
     background:none; border:1px solid var(--line); color:var(--text);
     width:36px; height:36px; display:flex; align-items:center; justify-content:center;
@@ -89,7 +110,7 @@
   @media (max-width:860px){
     nav.primary{display:none;}
     .hamburger{display:flex;}
-    .btn{display:none;}
+    .header-actions .btn{display:none;}
     #mobile-nav.open{
       display:flex; flex-direction:column;
       border-top:1px solid var(--line);
@@ -100,6 +121,7 @@
   }
 
   /* ---------- section heading pattern ---------- */
+  section[id]{scroll-margin-top:80px;}
   .section-head{
     display:flex; align-items:baseline; justify-content:space-between;
     border-bottom:1px solid var(--line);
@@ -132,6 +154,8 @@
     width:100%; aspect-ratio:16/10; object-fit:cover;
     border:1px solid var(--line);
   }
+  .article-link{display:block;}
+  .article-link:focus-visible{outline-offset:5px;}
   .hero-feature{position:relative;}
   .hero-feature .scan{
     position:absolute; left:0; right:0; top:0; height:2px;
@@ -183,17 +207,10 @@
   }
   .newsletter h3{font-size:1.3rem; margin-bottom:6px;}
   .newsletter p{color:var(--muted); font-size:0.92rem;}
-  .newsletter form{display:flex; gap:0; flex:0 0 auto;}
-  .newsletter input{
-    background:var(--ink); border:1px solid var(--line); border-right:none;
-    color:var(--text); padding:11px 14px; font-size:0.9rem; width:220px;
-  }
-  .newsletter input:focus{outline:2px solid var(--cyan); outline-offset:-2px;}
-  .newsletter .btn{padding:11px 20px;}
+  .newsletter .btn{display:inline-block; padding:11px 20px;}
 
   @media (max-width:560px){
-    .newsletter form{width:100%; flex-wrap:wrap;}
-    .newsletter input{width:100%; border-right:1px solid var(--line); margin-bottom:8px;}
+    .newsletter .btn{width:100%; text-align:center;}
   }
 
   /* ---------- category rows ---------- */
@@ -249,16 +266,36 @@
     color:var(--muted); font-size:0.8rem;
   }
 
+  /* ---------- search ---------- */
+  .search-dialog{
+    width:min(640px, calc(100% - 32px)); color:var(--text); background:var(--panel);
+    border:1px solid var(--line); padding:24px;
+  }
+  .search-dialog::backdrop{background:rgba(0,0,0,.72);}
+  .dialog-close{float:right; margin:-6px -6px 0 16px;}
+  .search-dialog h2{font-size:1.4rem; margin-bottom:16px;}
+  .search-form{clear:both; display:grid; gap:14px;}
+  .search-form input{
+    width:100%; background:var(--ink); border:1px solid var(--line); color:var(--text);
+    padding:12px 14px; font:inherit;
+  }
+  .search-results{list-style:none; display:grid; gap:8px;}
+  .search-results a{display:block; border:1px solid var(--line); padding:12px;}
+  .search-results a:hover{border-color:var(--cyan);}
+  .search-results span{display:block; color:var(--muted); font-size:.86rem; margin-top:3px;}
+  .search-status{color:var(--muted); font-size:.9rem;}
+
   @media (max-width:760px){
     .footer-grid{grid-template-columns:1fr 1fr; row-gap:28px;}
   }
 </style>
 </head>
-<body>
+<body id="top">
+  <a class="skip-link" href="#main-content">Skip to content</a>
 
 <header>
   <div class="header-inner">
-    <a href="#" class="logo"><span class="dot"></span>INTELGUARD</a>
+    <a href="#top" class="logo" aria-label="IntelGuard home"><span class="dot"></span>INTELGUARD</a>
     <nav class="primary">
       <a href="#technology">Technology</a>
       <a href="#ai-tools">AI Tools</a>
@@ -266,30 +303,32 @@
       <a href="#gadgets">Gadgets</a>
     </nav>
     <div class="header-actions">
-      <button class="icon-btn" aria-label="Search">⌕</button>
-      <button class="btn">Subscribe</button>
-      <button class="icon-btn hamburger" id="hamburger-btn" aria-label="Menu">☰</button>
+      <button class="icon-btn" id="search-btn" type="button" aria-label="Search articles" aria-haspopup="dialog" aria-controls="search-dialog" aria-expanded="false">⌕</button>
+      <a class="btn" href="#newsletter">Subscribe</a>
+      <button class="icon-btn hamburger" id="hamburger-btn" type="button" aria-label="Open menu" aria-controls="mobile-nav" aria-expanded="false">☰</button>
     </div>
   </div>
-  <nav id="mobile-nav">
+  <nav id="mobile-nav" aria-label="Mobile navigation">
     <a href="#technology">Technology</a>
     <a href="#ai-tools">AI Tools</a>
     <a href="#cybersecurity">Cybersecurity</a>
     <a href="#gadgets">Gadgets</a>
-    <a href="#">Subscribe</a>
+    <a href="#newsletter">Subscribe</a>
   </nav>
 </header>
 
-<main class="wrap">
+<main class="wrap" id="main-content" tabindex="-1">
 
   <!-- HERO -->
   <section class="hero">
     <div class="hero-grid">
       <div class="hero-feature">
         <div class="scan"></div>
-        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=900&q=80" alt="AI agent interface on a laptop screen">
+        <a class="article-link" href="ai-agents-rewriting-browser-2026.html" aria-label="Read: AI agents are quietly rewriting what a browser is for">
+          <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=900&q=80" alt="AI agent interface on a laptop screen">
+        </a>
         <span class="tag ai-tools"><span class="dot"></span>AI Tools</span>
-        <h1>AI agents are quietly rewriting what a browser is for</h1>
+        <h1><a href="ai-agents-rewriting-browser-2026.html">AI agents are quietly rewriting what a browser is for</a></h1>
         <p>A new wave of agentic tools is handling logins, forms, and multi-step tasks without you touching the keyboard. Here's what's actually ready to use today, and what still needs a human in the loop.</p>
         <div class="meta" style="margin-top:12px;">Dara Okafor, Sep 24, 2026</div>
       </div>
@@ -325,10 +364,10 @@
   </section>
 
   <!-- EDITOR'S PICKS -->
-  <section class="picks">
+  <section class="picks" id="editors-picks">
     <div class="section-head">
       <h2>Editor's picks</h2>
-      <a href="#" class="viewall">View all</a>
+      <a href="#technology" class="viewall">Browse stories</a>
     </div>
     <div class="picks-grid">
       <div class="pick-card">
@@ -350,22 +389,19 @@
   </section>
 
   <!-- NEWSLETTER -->
-  <section class="newsletter">
+  <section class="newsletter" id="newsletter" aria-labelledby="newsletter-title">
     <div>
-      <h3>Get the signal, skip the noise.</h3>
-      <p>One email a week — the tech and security stories worth your time.</p>
+      <h3 id="newsletter-title">Get the signal, skip the noise.</h3>
+      <p>Request the weekly tech and security briefing by email.</p>
     </div>
-    <form onsubmit="return false;">
-      <input type="email" placeholder="you@email.com" required>
-      <button class="btn" type="submit">Subscribe</button>
-    </form>
+    <a class="btn" href="mailto:oladeleabdullahi020@gmail.com?subject=IntelGuard%20newsletter%20request">Request the briefing</a>
   </section>
 
   <!-- TECHNOLOGY -->
   <section class="category-section" id="technology">
     <div class="section-head">
       <h2>Technology</h2>
-      <a href="#" class="viewall">More in Technology</a>
+      <a href="#technology" class="viewall">Technology stories</a>
     </div>
     <div class="row-grid">
       <article class="row-card">
@@ -396,15 +432,15 @@
   <section class="category-section" id="cybersecurity">
     <div class="section-head">
       <h2>Cybersecurity</h2>
-      <a href="#" class="viewall">More in Cybersecurity</a>
+      <a href="#cybersecurity" class="viewall">Cybersecurity stories</a>
     </div>
     <div class="row-grid">
       <article class="row-card">
         <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&q=80" alt="Padlock icon over a laptop keyboard">
         <span class="tag cybersecurity"><span class="dot"></span>Cybersecurity</span>
-        <h3><a> href="online-account-security-2026-one-file.html" style="color:inherit;">How to actually check if your passwords have leaked</a></h3>
-        <p>Beyond the browser warning — the tools worth using and how often to check.</p>
-        <div class="meta">Tomas Berg, Sep 20, 2026</div>
+        <h3><a href="online-account-security-2026-one-file.html">How to protect your online accounts from hackers</a></h3>
+        <p>A practical guide to passwords, passkeys, phishing, and recovery settings that actually matter.</p>
+        <div class="meta">Tomas Berg, Sep 27, 2026</div>
       </article>
       <article class="row-card">
         <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&q=80" alt="Person typing on laptop with security overlay">
@@ -427,7 +463,7 @@
   <section class="category-section" id="ai-tools">
     <div class="section-head">
       <h2>AI Tools</h2>
-      <a href="#" class="viewall">More in AI Tools</a>
+      <a href="#ai-tools" class="viewall">AI Tools stories</a>
     </div>
     <div class="row-grid">
       <article class="row-card">
@@ -458,7 +494,7 @@
   <section class="category-section" id="gadgets">
     <div class="section-head">
       <h2>Gadgets</h2>
-      <a href="#" class="viewall">More in Gadgets</a>
+      <a href="#gadgets" class="viewall">Gadget stories</a>
     </div>
     <div class="row-grid">
       <article class="row-card">
@@ -507,7 +543,7 @@
         <span class="feed-label">THE INTELGUARD BRIEFING</span>
         <h4>A five-minute daily tech &amp; security briefing</h4>
         <p>What changed overnight, and whether it actually matters.</p>
-        <a href="#" class="btn" style="display:inline-block; width:fit-content;">Listen now</a>
+        <a href="#newsletter" class="btn" style="display:inline-block; width:fit-content;">Get the briefing</a>
       </div>
     </div>
   </section>
@@ -518,15 +554,15 @@
   <div class="wrap">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="#" class="logo"><span class="dot"></span>INTELGUARD</a>
+        <a href="#top" class="logo" aria-label="IntelGuard home"><span class="dot"></span>INTELGUARD</a>
         <p>Straight answers on tech, AI, and security — for people who don't have time to sort through the hype.</p>
       </div>
       <div>
         <h5>Company</h5>
         <ul>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Contact</a></li>
-          <li><a href="#">Advertise</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="mailto:oladeleabdullahi020@gmail.com?subject=IntelGuard%20advertising%20inquiry">Advertise</a></li>
         </ul>
       </div>
       <div>
@@ -541,9 +577,9 @@
       <div>
         <h5>Legal</h5>
         <ul>
-          <li><a href="#">Privacy policy</a></li>
-          <li><a href="#">Terms of service</a></li>
-          <li><a href="#">Affiliate disclosure</a></li>
+          <li><a href="privacy-policy.html">Privacy policy</a></li>
+          <li><a href="terms-of-service.html">Terms of service</a></li>
+          <li><a href="affiliate-disclosure.html">Affiliate disclosure</a></li>
         </ul>
       </div>
     </div>
@@ -554,9 +590,87 @@
   </div>
 </footer>
 
+<dialog class="search-dialog" id="search-dialog" aria-labelledby="search-title">
+  <button class="icon-btn dialog-close" id="close-search-btn" type="button" aria-label="Close search">×</button>
+  <h2 id="search-title">Search IntelGuard</h2>
+  <form class="search-form" id="site-search-form" role="search">
+    <label class="sr-only" for="site-search-input">Search published articles</label>
+    <input id="site-search-input" type="search" name="q" placeholder="Search published articles" autocomplete="off">
+    <button class="btn" type="submit">Search</button>
+    <p class="search-status" id="search-status" aria-live="polite">Search the articles currently published on IntelGuard.</p>
+    <ul class="search-results" id="search-results"></ul>
+  </form>
+</dialog>
+
 <script>
-  document.getElementById('hamburger-btn').addEventListener('click', function(){
-    document.getElementById('mobile-nav').classList.toggle('open');
+  const hamburgerButton = document.getElementById('hamburger-btn');
+  const mobileNav = document.getElementById('mobile-nav');
+
+  hamburgerButton.addEventListener('click', () => {
+    const isOpen = mobileNav.classList.toggle('open');
+    hamburgerButton.setAttribute('aria-expanded', String(isOpen));
+    hamburgerButton.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+  });
+
+  mobileNav.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      mobileNav.classList.remove('open');
+      hamburgerButton.setAttribute('aria-expanded', 'false');
+      hamburgerButton.setAttribute('aria-label', 'Open menu');
+    });
+  });
+
+  const searchButton = document.getElementById('search-btn');
+  const searchDialog = document.getElementById('search-dialog');
+  const closeSearchButton = document.getElementById('close-search-btn');
+  const searchForm = document.getElementById('site-search-form');
+  const searchInput = document.getElementById('site-search-input');
+  const searchResults = document.getElementById('search-results');
+  const searchStatus = document.getElementById('search-status');
+  const articles = [
+    {
+      title: 'AI Agents Are Quietly Rewriting What a Browser Is For',
+      category: 'AI Tools',
+      description: 'What browser agents can do today, and where a human should stay in the loop.',
+      url: 'ai-agents-rewriting-browser-2026.html'
+    },
+    {
+      title: 'How to Protect Your Online Accounts From Hackers in 2026',
+      category: 'Cybersecurity',
+      description: 'Practical steps for passwords, passkeys, phishing, and account recovery.',
+      url: 'online-account-security-2026-one-file.html'
+    }
+  ];
+
+  function showSearchResults(query) {
+    const normalizedQuery = query.trim().toLowerCase();
+    const matches = normalizedQuery
+      ? articles.filter((article) => Object.values(article).some((value) => value.toLowerCase().includes(normalizedQuery)))
+      : articles;
+
+    searchResults.innerHTML = matches.map((article) => `
+      <li><a href="${article.url}">${article.title}<span>${article.category} · ${article.description}</span></a></li>
+    `).join('');
+    searchStatus.textContent = normalizedQuery
+      ? `${matches.length} ${matches.length === 1 ? 'article' : 'articles'} found for “${query.trim()}”.`
+      : 'Showing all published articles.';
+  }
+
+  searchButton.addEventListener('click', () => {
+    searchDialog.showModal();
+    searchButton.setAttribute('aria-expanded', 'true');
+    searchInput.focus();
+    showSearchResults(searchInput.value);
+  });
+
+  closeSearchButton.addEventListener('click', () => searchDialog.close());
+  searchDialog.addEventListener('close', () => {
+    searchButton.setAttribute('aria-expanded', 'false');
+    searchButton.focus();
+  });
+  searchForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    showSearchResults(searchInput.value);
   });
 </script>
 
